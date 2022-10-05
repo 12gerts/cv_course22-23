@@ -1,11 +1,11 @@
 import cv2 as cv
 import numpy as np
+from pynput.keyboard import Key, Controller
 
 LOW_BLUE = (35, 30, 30)
 HIGH_BLUE = (85, 255, 255)
 YELLOW = (0, 255, 255)
 GREEN = (150, 200, 12)
-
 OFFSET = 100
 
 
@@ -100,6 +100,8 @@ def draw_grid(img):
 
 
 def draw_area(img, x, y):
+    keyboard = Controller()
+
     height, width = img.shape[:2]
     y_center = img.shape[0] // 2
     x_center = img.shape[1] // 2
@@ -110,6 +112,7 @@ def draw_area(img, x, y):
         active_area[:, :, 2] = 100
         img[(y_center - OFFSET):(y_center + OFFSET),
         (x_center + OFFSET):width, :] = active_area
+        keyboard.press(Key.left)
 
     elif x_center - OFFSET > x and abs(y_center - y) <= OFFSET:
         active_area = img[(y_center - OFFSET):(y_center + OFFSET),
@@ -117,6 +120,7 @@ def draw_area(img, x, y):
         active_area[:, :, 2] = 100
         img[(y_center - OFFSET):(y_center + OFFSET), 0:(x_center - OFFSET),
         :] = active_area
+        keyboard.press(Key.right)
 
     elif y_center + OFFSET < y and abs(x_center - x) <= OFFSET:
         active_area = img[(y_center + OFFSET):height,
@@ -124,6 +128,7 @@ def draw_area(img, x, y):
         active_area[:, :, 2] = 100
         img[(y_center + OFFSET):height,
         (x_center - OFFSET):(x_center + OFFSET), :] = active_area
+        keyboard.press(Key.down)
 
     elif y_center - OFFSET > y and abs(x_center - x) <= OFFSET:
         active_area = img[0:(y_center - OFFSET),
@@ -131,6 +136,7 @@ def draw_area(img, x, y):
         active_area[:, :, 2] = 100
         img[0:(y_center - OFFSET), (x_center - OFFSET):(x_center + OFFSET),
         :] = active_area
+        keyboard.press(Key.up)
     return img
 
 
@@ -157,11 +163,6 @@ def process(cap):
             show('', img)
             continue
         cv.circle(img, (x, y), 5, YELLOW, -1)
-
-        height, width = img.shape[:2]
-        y_center = img.shape[0] // 2
-        x_center = img.shape[1] // 2
-
         img = draw_grid(img)
         img = draw_area(img, x, y)
         show('', img)
