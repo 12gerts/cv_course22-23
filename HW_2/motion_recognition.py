@@ -113,6 +113,7 @@ def draw_area(img, x, y):
         img[(y_center - OFFSET):(y_center + OFFSET),
         (x_center + OFFSET):width, :] = active_area
         keyboard.press(Key.left)
+        keyboard.release(Key.left)
 
     elif x_center - OFFSET > x and abs(y_center - y) <= OFFSET:
         active_area = img[(y_center - OFFSET):(y_center + OFFSET),
@@ -121,6 +122,7 @@ def draw_area(img, x, y):
         img[(y_center - OFFSET):(y_center + OFFSET), 0:(x_center - OFFSET),
         :] = active_area
         keyboard.press(Key.right)
+        keyboard.release(Key.right)
 
     elif y_center + OFFSET < y and abs(x_center - x) <= OFFSET:
         active_area = img[(y_center + OFFSET):height,
@@ -129,6 +131,7 @@ def draw_area(img, x, y):
         img[(y_center + OFFSET):height,
         (x_center - OFFSET):(x_center + OFFSET), :] = active_area
         keyboard.press(Key.down)
+        keyboard.release(Key.down)
 
     elif y_center - OFFSET > y and abs(x_center - x) <= OFFSET:
         active_area = img[0:(y_center - OFFSET),
@@ -137,6 +140,7 @@ def draw_area(img, x, y):
         img[0:(y_center - OFFSET), (x_center - OFFSET):(x_center + OFFSET),
         :] = active_area
         keyboard.press(Key.up)
+        keyboard.release(Key.up)
     return img
 
 
