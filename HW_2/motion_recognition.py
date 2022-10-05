@@ -55,7 +55,7 @@ def resize(img):
 
 
 def show(text, img):
-    cv.imshow(text, img)
+    cv.imshow(text, cv.flip(img, flipCode=1))
     cv.waitKey(5)
 
 
@@ -76,7 +76,10 @@ def return_max_area_rectangle(mask):
 
 
 def return_max_area_center(mask):
-    x, y, w, h, cnt = return_max_area_rectangle(mask)
+    try:
+        x, y, w, h, cnt = return_max_area_rectangle(mask)
+    except ValueError:
+        return None, None
     m = cv.moments(cnt)
     if m['m00'] == 0:
         return None, None
@@ -131,6 +134,12 @@ def draw_area(img, x, y):
     return img
 
 
+def draw_text(img):
+    img = cv.flip(img, flipCode=1)
+    cv.putText(img, "Take green object", (60, 60), cv.FONT_HERSHEY_SIMPLEX, 2, GREEN, 2)
+    return cv.flip(img, flipCode=1)
+
+
 def process(cap):
     """ Converting each frame of video. """
     while cap.isOpened():
@@ -143,6 +152,10 @@ def process(cap):
         mask = color_mask(img)
         img_without_noise = remove_noise(mask)
         x, y = return_max_area_center(img_without_noise)
+        if x is None:
+            img = draw_text(img)
+            show('', img)
+            continue
         cv.circle(img, (x, y), 5, YELLOW, -1)
 
         height, width = img.shape[:2]
@@ -161,7 +174,7 @@ def process(cap):
 
 
 def main():
-    video = cv.VideoCapture('data\\hw_2.MOV')
+    video = cv.VideoCapture(0)
     process(video)
 
 
