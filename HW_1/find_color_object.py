@@ -90,7 +90,7 @@ def process(cap):
 
 
 def main():
-    video = cv.VideoCapture('data\\hw_1.MOV')
+    video = cv.VideoCapture(0)
     process(video)
 
 
