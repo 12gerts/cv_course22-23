@@ -2,7 +2,7 @@
 
 Управление происходит с помощью вебкамеры. Необходимо взять объект
 определенного цвета и перемещать его относительно сетки.
-![](https://github.com/12gerts/storage_facility/blob/main/process.gif)
+![](https://github.com/12gerts/cv_course22-23/blob/main/HW_2/process.gif)
 
 ## Запуск
 
